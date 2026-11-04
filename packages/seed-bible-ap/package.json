@@ -36,6 +36,7 @@
     "size": "node scripts/build-size.mjs",
     "gate": "pnpm typecheck && pnpm test && pnpm build:web && pnpm smoke:ssr && pnpm size",
     "e2e": "tsx scripts/e2e.ts",
+    "parity": "tsx scripts/parity.ts",
     "manual:tests": "tsx scripts/manual-tests.ts"
   },
   "dependencies": {
@@ -74,11 +75,14 @@
     "@testing-library/preact": "3.2.4",
     "@types/leaflet": "1.9.12",
     "@types/node": "^24.5.2",
+    "@types/pngjs": "6.0.5",
     "@types/qrcode": "1.5.5",
     "@vitest/coverage-v8": "4.1.8",
     "fake-indexeddb": "^6.0.0",
     "jsdom": "26.1.0",
+    "pixelmatch": "7.1.0",
     "playwright": "1.59.1",
+    "pngjs": "7.0.0",
     "preact-render-to-string": "catalog:",
     "tsx": "^4.20.5",
     "typescript": "^5.9.3",

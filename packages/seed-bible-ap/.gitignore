@@ -4,3 +4,6 @@
 .seed/
 .wrangler/
 dist/
+# The parity harness output (scripts/parity.ts) and a saved sign-in for its signed-in screens.
+/parity/
+.parity-*.json
