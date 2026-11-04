@@ -1,4 +1,5 @@
-// THE BUILT-IN EXTENSIONS, registered at boot; each is on by default and can be turned off in the account pane.
+// THE BUILT-IN EXTENSIONS, registered at boot. As on seedbible.org, only Compare is on for a new reader; the rest
+// are installed from Settings → Extensions.
 // Ported here as intent emitters (docs/porting/ExtensionManager.md); the ones that need a credential or an org
 // publisher (external MCP acts, Apologist) are not here.
 import type { ExtensionHost } from "./host";

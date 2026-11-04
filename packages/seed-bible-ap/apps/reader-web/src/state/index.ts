@@ -926,6 +926,14 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
         target ?? { translationId: defaultTranslationFor(language.value) }
       );
     tabsRestored = true;
+    // Arriving at the root address (no chapter in it) opens on Today, as seedbible.org does: the Welcome card for a
+    // first visit, the day's picture after that. A chapter link opens its chapter.
+    if (
+      !fromUrl &&
+      typeof location !== "undefined" &&
+      location.pathname === "/"
+    )
+      ui.pane.value = "today";
     if (offering) {
       discover.focus.value = offering;
       ui.pane.value = "discover";

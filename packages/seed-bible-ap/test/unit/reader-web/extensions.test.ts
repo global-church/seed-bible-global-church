@@ -101,7 +101,7 @@ describe("the extension host", () => {
     expect(host.providers.value).toHaveLength(0);
     expect(host.panes.value).toHaveLength(0);
     expect(host.headerButtons.value).toHaveLength(0);
-    expect(await stores.prefs.get("extensions:enabled")).toEqual([]);
+    expect(await stores.prefs.get("extensions:enabled:2")).toEqual([]);
 
     await host.setEnabled("off", true);
     expect(log).toContain("off-init");

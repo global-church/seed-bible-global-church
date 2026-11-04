@@ -55,6 +55,7 @@ export function loadChapterPlaces(
 
 const locationsExtension: ExtensionRegistration = {
   id: "locations",
+  defaultEnabled: false,
   label: "Places",
   description: "The places a chapter names, in Discover.",
   init: function* (ctx) {

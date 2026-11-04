@@ -79,8 +79,6 @@ export function FloatingSearch({ state }: { state: ReaderState }) {
       return;
     }
     const id = setTimeout(() => input.current?.focus(), 60);
-    // Its short tour, the first time it opens (once; never if tutorials are off).
-    const tour = setTimeout(() => state.tours.startContextual("search"), 400);
     const onDown = (e: PointerEvent) => {
       const el = e.target as Element | null;
       if (
@@ -93,7 +91,6 @@ export function FloatingSearch({ state }: { state: ReaderState }) {
     document.addEventListener("pointerdown", onDown);
     return () => {
       clearTimeout(id);
-      clearTimeout(tour);
       document.removeEventListener("pointerdown", onDown);
     };
   }, [open]);

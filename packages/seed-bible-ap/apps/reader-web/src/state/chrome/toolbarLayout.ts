@@ -10,20 +10,27 @@ export interface ToolbarLayout {
   hidden: string[];
 }
 
-// A new key: layouts saved under "toolbar:layout" meant "hidden is gone", made before the bar took the old reader's
-// short shape.
-const KEY = "toolbar:layout:2";
-/** The old reader's bar: Books, Search and Discover (and each extension's button) in it; the rest under More. */
+// A new key each time the default bar changes shape, so a layout saved under the old default is left behind and the
+// new default applies: "toolbar:layout" meant "hidden is gone"; ":2" put Discover in the bar; ":3" is seedbible.org's
+// bar — Today in it, the extensions' buttons under More.
+const KEY = "toolbar:layout:3";
+/** seedbible.org's bar: Today, Books, Search and Discover in it; everything else, each extension's button included,
+ *  under More. An extension's button is `ext:<its toolbar item id>` (extensions/host). */
 export const DEFAULT_LAYOUT: ToolbarLayout = {
   order: [],
   hidden: [
     "session",
-    "today",
+    "faith",
     "notes",
     "library",
     "content",
     "fullscreen",
     "theme",
+    "ext:companion",
+    "ext:places-map",
+    "ext:transcript",
+    "ext:writings",
+    "ext:watch",
   ],
 };
 

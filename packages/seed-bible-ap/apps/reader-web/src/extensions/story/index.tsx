@@ -9,6 +9,7 @@ import "./story.css";
 
 const story: ExtensionRegistration = {
   id: "story",
+  defaultEnabled: false,
   label: "Story",
   description:
     "Tap a section heading or the chapter's title: what has been published about it, then who, where and what happens — and a person's oikos and generations.",

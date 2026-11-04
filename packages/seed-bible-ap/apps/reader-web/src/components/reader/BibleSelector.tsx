@@ -224,9 +224,6 @@ export function BibleSelector({ state }: { state: ReaderState }) {
 
   useEffect(() => {
     if (mode === "translations") void reading.loadTranslations();
-    // The first time each list opens, its short tour (once; never if tutorials are off).
-    if (mode === "books")
-      setTimeout(() => state.tours.startContextual("selector"), 400);
     if (mode) {
       setSearch("");
       setBookPick(null);
