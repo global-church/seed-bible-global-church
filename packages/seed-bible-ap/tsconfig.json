@@ -27,6 +27,7 @@
     "apps/seed-bible-mcp/src/**/*",
     "apps/seed-bible-a2a/src/**/*",
     "scripts/smoke.ts",
+    "scripts/parity.ts",
     "scripts/smoke/**/*.ts",
     "test/**/*.ts"
   ],
