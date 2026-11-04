@@ -254,7 +254,85 @@ translation pill, the bar, Settings; **Skip**, **Done →**).
 
 The pill → `?selector=open` with the translation list first.
 
-## Signed-in flows (from the code; not walked — Paul signs in himself for the signed-in pass)
+## Signed-in flows (walked 2026-11-04 on Paul's own session, desktop; the table below is what the code lists)
+
+### S01 Profile
+
+`?profile=open`: a card with the avatar (a letter, a + badge to change the picture), the user id ("a7e8072b"), the
+email; rows **Your content** ("Create and manage your content") and **Friends** ("Add friends and see what they're
+reading"), each with an arrow; **Sign out** (red outline); **Edit profile** (pencil) top-right of the card. The
+sidebar's profile circle still reads "Open profile (Anonymous)" signed in (their bug).
+
+### S02 Edit profile
+
+`?edit-profile=open`: **Change profile picture**, **Profile name** ("e.g Craig family"), **Location (Optional)**
+("e.g Austin,TX"), **Description (Optional)** textarea, **Save changes**; **Back**, **Close**.
+
+### S03 Note editor
+
+Verse menu → **Note** opens a right-hand pane "Annotate Genesis 1:1": a TipTap toolbar (**Bold**, **Italic**,
+**Underline**, **Align left/center/right**, **Justify**), the editor, **Cancel**, **Save (⌘+Enter)**; **Back**,
+**Close**.
+
+### S06 Your content
+
+`?content=open`: **Search your content**, **+ Create** (a menu: **Playlist**, **Custom Branding**), chips
+**All / Annotations / Highlights / Saves / Playlists / Branding / Images**; empty state "Notes, highlights, saves and
+playlists you make will show up here." **Back**, **Close**.
+
+### S07 Playlist editor
+
+- Create → Playlist: a right-hand pane with the **Playlist title** input in the header, **Cover image** (**Add cover
+  image**, "Optional. Recommended size: 1024×768"), **Description**, **Items** ("No items yet."), **Add item** with an
+  **Item type** select (Scripture …), "e.g. John 3 or John 3:16", **Add item**, **Add a note**; **Cancel**, **Save**.
+
+### S09 Friends
+
+`?friends=open`: "Friends — No friends yet. Share your friend link, or add someone by their user ID."; **Add a friend**
+with a **User ID** field and **Send request**; "Share your friend link. Anyone who opens it can send you a request."
+**Copy your friend link**; "Your user ID a7e8072b-…" **Copy your user ID**.
+
+### S10 Session
+
+Share → **Start and share session** starts one at once: the address gains `?sessionId=session-<uuid>`, a second tab
+"Genesis 1 • BSB" with the host's avatar appears in the sidebar, and the bar becomes **Today, Books, Search, More**
+(Discover moves under More while in a session). The Share sheet signed in has four rows: **Share a link**,
+**Embed**, **Share via…** (the device share sheet), **Start and share session**.
+
+### S12 Today, signed in
+
+`?today=open`: the date and a time-of-day greeting ("Good night!"), **Continue where you left off** (the chapter, an
+arrow), **Verse of the day** (a quoted verse with its reference, **Psalms 8:1 • BSB →**; not John 1:1), **Go somewhere
+new** (**Books**, "Search books, chapters, verses…"), **Community** with chips **All / Notes / Reading** and a
+**History** toggle that shows a year heat-map of reading days (Less … More, Year: 2026) above the feed ("You read
+Genesis 1", a time).
+
+### S13 Custom Branding
+
+- Create → Custom Branding makes a record at once ("Custom Branding 1"): **Name**, **Upload a logo** ("Square PNG or
+  SVG, at least 256px"), **Default translation** (Seed Bible's default ▾), **Themes** (a theme card "Dark · Default",
+  **Add theme**), **Extensions** ("16 available · 0 auto · 0 hidden"), **Delete** (confirm dialog "This can't be
+  undone."), **Share**, **Save**.
+
+### S14 Extensions, signed in
+
+The catalogue page is the same; a card opens its detail: monogram, name, "Built into Seed Bible", description,
+**Install** ("You'll see what it can do and agree before anything is installed"), **Details · ID ext_references**.
+
+### S05 / S11 Bookmarks and Saves panels
+
+The sidebar header's **Bookmarks** opens a panel above the tabs ("No bookmarks yet. Use the bookmark button above a
+chapter to…"); **Saves** opens "My Saves" with "No saves here yet."
+
+### Settings, signed in
+
+Settings → **Account** opens the Profile pane (`?settingsView=main&profile=open`), the same card as S01.
+
+Not walked: email-code login (the session was already signed in), reading plans (no entry point found signed out or
+in; `ReadingPlansPane` may be reached from Today once a plan exists), invitations by email, shared pages, offline
+download prompts, the adopt-device-content modal, the customization variant gallery.
+
+The table as listed from the code:
 
 | id  | Flow                                                                                      | Component                                                                                                                                                     |
 | --- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
