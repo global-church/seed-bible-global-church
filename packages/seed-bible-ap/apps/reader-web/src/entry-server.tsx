@@ -89,7 +89,7 @@ export function ChapterShell({
     [SSR_BUILD_ATTR]: buildId,
   };
   return (
-    <div class="sb-app sb-app-ssr" {...attrs}>
+    <div class="sb-app sb-app-root sb-app-ssr" {...attrs}>
       <main class="sb-app-main">
         <div class="sb-panes-layout" data-layout="single">
           <div class="sb-pane-shell sb-pane-slot-1">
