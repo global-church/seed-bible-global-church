@@ -126,13 +126,18 @@ export function toolbarActions(
       active: ui.pane.value === "today",
       onClick: () => togglePane("today"),
     },
-    {
-      id: "faith",
-      icon: "volunteer_activism",
-      label: t("faith-toolbar", { defaultValue: "Prayer" }),
-      active: ui.pane.value === "faith",
-      onClick: () => togglePane("faith"),
-    },
+    // The faith records (Prayer, Journey, Care) are Labs: this reader's, not seedbible.org's.
+    ...(settings.labs.value
+      ? [
+          {
+            id: "faith",
+            icon: "volunteer_activism",
+            label: t("faith-toolbar", { defaultValue: "Prayer" }),
+            active: ui.pane.value === "faith",
+            onClick: () => togglePane("faith"),
+          },
+        ]
+      : []),
     {
       id: "discover",
       icon: "explore",

@@ -26,6 +26,8 @@
   "delete-customization": "Delete",
   "logo": "Logo",
   "extensions": "Extensions",
+  "labs": "Labs",
+  "labs-description": "What this reader adds beyond seedbible.org: story cards, the Dead Sea Scrolls, writings, the study companion, Prayer, the Scripture check, the toolbar and theme editors. Off, it reads as the Seed Bible you know.",
   "language": "Language",
   "no-languages-found": "No languages found",
   "report-a-bug": "Report a bug",

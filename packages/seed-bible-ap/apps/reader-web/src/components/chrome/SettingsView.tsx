@@ -129,16 +129,20 @@ export function SettingsView({ state }: { state: ReaderState }) {
       icon: "info",
       label: t("about-title", { defaultValue: "About Seed Bible" }),
     },
-    {
-      id: "toolbar",
-      icon: "tune",
-      label: t("toolbar", { defaultValue: "Toolbar" }),
-    },
-    {
-      id: "customize",
-      icon: "palette",
-      label: t("customize", { defaultValue: "Customize" }),
-    },
+    ...(state.settings.labs.value
+      ? [
+          {
+            id: "toolbar" as const,
+            icon: "tune",
+            label: t("toolbar", { defaultValue: "Toolbar" }),
+          },
+          {
+            id: "customize" as const,
+            icon: "palette",
+            label: t("customize", { defaultValue: "Customize" }),
+          },
+        ]
+      : []),
   ];
   const title =
     page === "main" ? "" : (rows.find((r) => r.id === page)?.label ?? "");
@@ -291,6 +295,26 @@ export function SettingsView({ state }: { state: ReaderState }) {
               >
                 {t("report-a-bug", { defaultValue: "Report a bug" })}
               </button>
+            </section>
+            <section className="sb-settings-section">
+              <label className="sb-small sb-check">
+                <input
+                  type="checkbox"
+                  checked={state.settings.labs.value}
+                  onChange={(e) =>
+                    (state.settings.labs.value = (
+                      e.target as HTMLInputElement
+                    ).checked)
+                  }
+                />{" "}
+                <strong>{t("labs", { defaultValue: "Labs" })}</strong>
+              </label>
+              <p className="sb-small sb-muted">
+                {t("labs-description", {
+                  defaultValue:
+                    "What this reader adds beyond seedbible.org: story cards, the Dead Sea Scrolls, writings, the study companion, Prayer, the Scripture check, the toolbar and theme editors. Off, it reads as the Seed Bible you know.",
+                })}
+              </p>
             </section>
             <VersionLine />
           </div>

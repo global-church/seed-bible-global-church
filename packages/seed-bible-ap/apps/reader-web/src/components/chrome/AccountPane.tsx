@@ -1452,7 +1452,7 @@ export function ExtensionsCard({ state }: { state: ReaderState }) {
   const [tab, setTab] = useState<"installed" | "available">("installed");
   const [configuring, setConfiguring] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const all = ext.registered.value;
+  const all = ext.visible.value;
   const installed = all.filter((r) => ext.enabled.value.has(r.id));
   const available = all.filter((r) => !ext.enabled.value.has(r.id));
   const list = tab === "installed" ? installed : available;

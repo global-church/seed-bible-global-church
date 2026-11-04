@@ -5535,8 +5535,6 @@ export const MORE_FLOWS: Flow[] = [
         "Install App",
         "Launch tutorial",
         "About Seed Bible",
-        "Toolbar",
-        "Customize",
       ];
       if (labels.join() !== want.join())
         throw new Error(`Settings lists: ${labels.join(", ")}`);

@@ -84,6 +84,7 @@ interface Persisted {
   bookOrder?: BookOrder;
   showDiscovered?: boolean;
   selectionEffects?: SelectionEffects;
+  labs?: boolean;
 }
 
 /** The reader's own colours for the twelve highlight colours (Settings → Themes → Highlight colors): background and
@@ -159,6 +160,10 @@ export function createSettings(deps: SettingsDeps = {}) {
   );
   /** The Discover card beside the chapter (the old reader's "Show discovered content"). */
   const showDiscovered = signal(saved.showDiscovered !== false);
+  /** LABS — what this reader adds beyond seedbible.org (story cards, the scrolls, writings, the study companion,
+   *  Prayer, the Scripture check badge, the toolbar customizer …). Off for everyone until they turn it on in
+   *  Settings, so the reader opens as the one people know. */
+  const labs = signal(saved.labs === true);
   const selectionEffects = signal<SelectionEffects>(
     saved.selectionEffects === "enabled" ||
       saved.selectionEffects === "disabled"
@@ -273,6 +278,7 @@ export function createSettings(deps: SettingsDeps = {}) {
         bookOrder: bookOrder.value,
         showDiscovered: showDiscovered.value,
         selectionEffects: selectionEffects.value,
+        labs: labs.value,
       };
       localStorage.setItem(KEY, JSON.stringify(p));
     } catch {
@@ -298,6 +304,7 @@ export function createSettings(deps: SettingsDeps = {}) {
     bookOrder,
     showDiscovered,
     selectionEffects,
+    labs,
     resolvedTheme,
     toggleTheme,
     dispose,

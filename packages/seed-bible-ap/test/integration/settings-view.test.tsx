@@ -18,8 +18,6 @@ const ROWS = [
   "Install App",
   "Launch tutorial",
   "About Seed Bible",
-  "Toolbar",
-  "Customize",
 ];
 
 describe("Settings in the sidebar", () => {
@@ -43,6 +41,8 @@ describe("Settings in the sidebar", () => {
   it("each row opens its page with ← back to the list", async () => {
     const t = await createTestReaderState({});
     t.state.ui.sidebarCollapsed.value = false;
+    // Toolbar and Customize are Labs rows.
+    t.state.settings.labs.value = true;
     const r = renderInHost(<TabsSidebar state={t.state} />);
     fireEvent.click(r.getByRole("button", { name: "Open settings" }));
     const pages: Array<[string, RegExp]> = [
