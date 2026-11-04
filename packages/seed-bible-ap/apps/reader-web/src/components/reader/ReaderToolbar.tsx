@@ -449,6 +449,21 @@ export function ReaderToolbar({ state }: { state: ReaderState }) {
           onClick={() => void reading.next()}
         />
       )}
+      {/* seedbible.org's bar reads Today, Books, Search, Discover: Today, when it is in the bar, comes first. */}
+      {shown
+        .filter((a) => a.id === "today")
+        .map((a) => (
+          <Item
+            key={a.id}
+            icon={a.icon}
+            label={a.label}
+            labeled
+            active={a.active}
+            badge={a.badge}
+            className="sb-reader-toolbar-secondary"
+            onClick={a.onClick}
+          />
+        ))}
       <Item
         icon="books"
         render={() => <SeedBibleIcon size={24} />}
@@ -468,18 +483,20 @@ export function ReaderToolbar({ state }: { state: ReaderState }) {
         active={ui.searchOpen.value}
         onClick={openSearch}
       />
-      {shown.map((a, i) => (
-        <Item
-          key={a.id}
-          icon={a.icon}
-          label={a.label}
-          labeled
-          active={a.active}
-          badge={a.badge}
-          className={`sb-reader-toolbar-secondary${keep !== null && i >= keep ? " sb-reader-toolbar-secondary-folded" : ""}`}
-          onClick={a.onClick}
-        />
-      ))}
+      {shown
+        .filter((a) => a.id !== "today")
+        .map((a, i) => (
+          <Item
+            key={a.id}
+            icon={a.icon}
+            label={a.label}
+            labeled
+            active={a.active}
+            badge={a.badge}
+            className={`sb-reader-toolbar-secondary${keep !== null && i >= keep ? " sb-reader-toolbar-secondary-folded" : ""}`}
+            onClick={a.onClick}
+          />
+        ))}
       <Item
         icon="more_horiz"
         className="sb-reader-toolbar-more-button"
