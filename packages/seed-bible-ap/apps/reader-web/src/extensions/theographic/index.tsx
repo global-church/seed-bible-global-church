@@ -166,6 +166,7 @@ function Card({ state }: { state: ReaderState }) {
 
 const theographic: ExtensionRegistration = {
   id: "theographic",
+  defaultEnabled: false,
   label: "People, places and events",
   description:
     "Who and where in the chapter on screen, from the Theographic dataset, in Discover.",

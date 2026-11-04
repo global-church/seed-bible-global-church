@@ -169,7 +169,8 @@ export interface ExtensionRegistration {
   init: (context: ExtensionContext) => Iterable<Cleanup>;
 }
 
-const KEY = "extensions:enabled";
+// A new key when the defaults change: a set saved under "extensions:enabled" (every built-in on) is left behind.
+const KEY = "extensions:enabled:2";
 const SETTINGS_KEY = "extensions:settings";
 
 function registry<T extends { id: string }>(): {

@@ -27,18 +27,18 @@ describe("toolbar layout", () => {
     ).toEqual(["theme", "session", "today", "discover", "notes", "ext:watch"]);
   });
 
-  it("starts as the old reader's bar: Discover in it, the rest under More, none lost", () => {
+  it("starts as seedbible.org's bar: Today and Discover in it, the rest and the extensions' buttons under More, none lost", () => {
     const t = createToolbarLayout(memoryStores().prefs);
     const all = [...items, { id: "ext:watch" }];
     expect(arrange(all, t.layout.value).map((x) => x.id)).toEqual([
+      "today",
       "discover",
-      "ext:watch",
     ]);
     expect(underMore(all, t.layout.value).map((x) => x.id)).toEqual([
       "session",
-      "today",
       "notes",
       "theme",
+      "ext:watch",
     ]);
   });
 
@@ -73,6 +73,7 @@ describe("toolbar layout", () => {
     expect(again.layout.value.order.slice(0, 2)).toEqual(["session", "notes"]);
     again.reset();
     expect(arrange(items, again.layout.value).map((x) => x.id)).toEqual([
+      "today",
       "discover",
     ]);
   });

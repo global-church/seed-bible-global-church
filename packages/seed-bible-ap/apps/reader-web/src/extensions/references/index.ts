@@ -126,6 +126,7 @@ export function itemsFor(
 
 const references: ExtensionRegistration = {
   id: "references",
+  defaultEnabled: false,
   label: "Cross-references",
   description: "Passages related to the verses on screen, in Discover.",
   settings: {

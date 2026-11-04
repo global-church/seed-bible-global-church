@@ -41,8 +41,13 @@ export function Onboarding({ state }: { state: ReaderState }) {
     setStage("install");
   };
 
-  // Someone arriving from an invitation answers that first; the offer waits until it's closed.
-  if (stage === "tour" && !state.friendship.invite.value)
+  // Someone arriving from an invitation answers that first; the offer waits until it's closed. Over the Welcome card
+  // it would compete with Take a tour, so it waits for the chapter, as seedbible.org's does.
+  if (
+    stage === "tour" &&
+    !state.friendship.invite.value &&
+    state.ui.pane.value !== "today"
+  )
     return (
       <div
         className="sb-tutorial-prompt"

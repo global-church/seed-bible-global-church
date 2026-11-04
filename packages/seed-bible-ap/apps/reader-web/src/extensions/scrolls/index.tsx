@@ -251,6 +251,7 @@ function Card({ state }: { state: ReaderState }) {
 
 const scrolls: ExtensionRegistration = {
   id: "scrolls",
+  defaultEnabled: false,
   label: "Dead Sea Scrolls",
   description:
     "The Dead Sea Scroll lines at the verses on screen — Hebrew and an English draft — in Discover.",

@@ -76,6 +76,18 @@ describe("the first visit", () => {
     expect(await t.stores.prefs.get(INSTALL_OFFER_KEY)).toBeTruthy();
   });
 
+  it("waits while the Welcome card is up, and comes up once the chapter is on screen", async () => {
+    const t = await createTestReaderState({ identity: null });
+    t.state.ui.pane.value = "today";
+    const r = renderInHost(<Onboarding state={t.state} />);
+    await flush();
+    expect(r.queryByText(OFFER)).toBeNull();
+    await act(async () => {
+      t.state.ui.pane.value = "none";
+    });
+    await waitFor(() => expect(r.queryByText(OFFER)).not.toBeNull());
+  });
+
   it("never comes up in an embed", async () => {
     const t = await createTestReaderState({ identity: null });
     t.state.ui.embed.value = true;

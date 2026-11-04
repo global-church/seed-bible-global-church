@@ -590,7 +590,8 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
     selector: signal<"books" | "translations" | null>(null),
     noteDraft: signal<{ start: number; end: number } | null>(null),
     focusNoteVerse: signal<number | null>(null),
-    sidebarCollapsed: signal(false),
+    // Collapsed to the rail on a new device, as seedbible.org's is; a tap on the rail's top button expands it.
+    sidebarCollapsed: signal(true),
     /** On a phone the sidebar is a drawer over the reader, opened from the toolbar. */
     sidebarDrawer: signal(false),
     /** An extension's pane (the Places map) expanded to the full page, from its header's button. */
@@ -905,6 +906,11 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
     }
     const fromUrl =
       typeof location !== "undefined" ? parseRoute(location.pathname) : null;
+    // Read before the first tab opens: opening it moves the address to the chapter (pushRoute).
+    const atRoot =
+      !fromUrl &&
+      typeof location !== "undefined" &&
+      location.pathname === "/";
     // Read everything the link carries BEFORE the first navigation: opening the tab rewrites the URL (pushRoute),
     // and a `?v=` or `?offering=` read after that is gone.
     const shared =
@@ -926,6 +932,9 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
         target ?? { translationId: defaultTranslationFor(language.value) }
       );
     tabsRestored = true;
+    // Arriving at the root address (no chapter in it) opens on Today, as seedbible.org does: the Welcome card for a
+    // first visit, the day's picture after that. A chapter link opens its chapter.
+    if (atRoot) ui.pane.value = "today";
     if (offering) {
       discover.focus.value = offering;
       ui.pane.value = "discover";

@@ -344,6 +344,9 @@ describe("what a heading or the title opens", () => {
     host.register(story);
     const state = { ui: { pane: { value: "none" } } } as unknown as ReaderState;
     await host.bind(state);
+    // Off for a new reader (seedbible.org's default set); on once installed from Settings → Extensions.
+    expect(host.headingTools.value).toHaveLength(0);
+    await host.setEnabled("story", true);
     host.headingTools.value[0]!.onSelect({
       chapterRef: "GEN.1",
       heading: "The Creation",

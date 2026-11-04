@@ -22,6 +22,7 @@ export function discoverItemOf(m: PublishedMedia): DiscoverItem {
 
 const defaultContent: ExtensionRegistration = {
   id: "default-content",
+  defaultEnabled: false,
   label: "Videos and articles",
   description:
     "Videos and articles published about the chapter on screen (BibleProject's overviews, curated videos), in Discover.",

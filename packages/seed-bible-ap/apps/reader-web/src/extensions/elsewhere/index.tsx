@@ -81,6 +81,7 @@ function GreekCard({ state }: { state: ReaderState }) {
 
 const elsewhere: ExtensionRegistration = {
   id: "elsewhere",
+  defaultEnabled: false,
   label: "Elsewhere",
   description:
     "Where the New Testament quotes a verse, the passages parallel to it, and the verse in Greek (the Septuagint) — in Discover.",
