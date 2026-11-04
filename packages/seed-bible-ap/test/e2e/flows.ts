@@ -1079,14 +1079,14 @@ const BASE_FLOWS: Flow[] = [
       if (!/points to/i.test(refs))
         throw new Error(`references: ${refs.slice(0, 200)}`);
       await c.page
-        .locator(".sb-bible-reader-active .sb-bible-reader-book-picker:visible")
+        .locator(".sb-bible-reader-active .sb-bible-reader-title:visible")
         .first()
         .click();
       await c.page
         .getByPlaceholder(/Search books/i)
         .waitFor({ timeout: 10000 });
       await c.page.keyboard.press("Escape");
-      return `pane 'Genesis'; Published: Genesis 1-11, Genesis 12-50; About: ${about.slice(0, 60)}…; References: ${refs.slice(0, 60)}…; the book icon opens the picker`;
+      return `pane 'Genesis'; Published: Genesis 1-11, Genesis 12-50; About: ${about.slice(0, 60)}…; References: ${refs.slice(0, 60)}…; the title opens the picker`;
     },
   },
   {

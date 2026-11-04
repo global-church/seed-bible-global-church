@@ -8,7 +8,7 @@ import { sharedRefOf } from "../../state/social/sharedPage";
 import type { Offering } from "../../state/social/discover";
 import { DiscoverPanel } from "../social/DiscoverPanel";
 import { PresenceGutter, colorOf } from "../sessions/PresenceGutter";
-import { ScriptureCheckBadge, verseCheckTitle } from "./ScriptureCheck";
+import { checkLook, verseCheckTitle } from "./ScriptureCheck";
 import { useEffect, useRef, useState } from "preact/hooks";
 import type { ChapterVerse, TranslationBookChapter } from "../../backend/bible";
 import type { ReaderState } from "../../state";
@@ -121,6 +121,7 @@ export function BibleReader({
   }, [chapter]);
   const translationLabel =
     reading.translation.value?.shortName ?? reading.translationId.value;
+  const translationName = reading.translation.value?.name ?? translationLabel;
   // The text on screen, checked against what was published (state/reading/scriptureCheck.ts).
   const check = state.scriptureCheck.of(chapter as never);
   const verseChecks = check && "verses" in check ? check.verses : undefined;
@@ -269,21 +270,6 @@ export function BibleReader({
       bookName: reading.bookName.value,
     });
   };
-  const bookPicker = (className: string) => (
-    <button
-      type="button"
-      className={className}
-      aria-label={t("change-book", { defaultValue: "Change book" })}
-      title={t("change-book", { defaultValue: "Change book" })}
-      onClick={(e: MouseEvent) => {
-        e.stopPropagation();
-        ui.selector.value = ui.selector.value === "books" ? null : "books";
-      }}
-    >
-      <span className="material-symbols-outlined">menu_book</span>
-    </button>
-  );
-
   /** Others' marks in the live session, verse by verse, for the off-screen cues. */
   const sessionCues = (): CueMark[] => {
     const me = state.live.me.value;
@@ -857,14 +843,19 @@ export function BibleReader({
                 {reading.chapterNumber.value}
               </span>
             </h2>
-            {bookPicker("sb-bible-reader-book-picker")}
             <button
               type="button"
               className="sb-bible-reader-translation"
               aria-label={t("change-translation", {
-                name: translationLabel,
-                defaultValue: `Change translation (${translationLabel})`,
+                name: translationName,
+                defaultValue: `Change translation (${translationName})`,
               })}
+              // The Scripture check's state lives here as the tooltip (seedbible.org's header carries no badge).
+              title={
+                check
+                  ? `${translationName} · ${checkLook(check, t).label}`
+                  : translationName
+              }
               onClick={(e: MouseEvent) => {
                 e.stopPropagation();
                 ui.selector.value = "translations";
@@ -872,13 +863,6 @@ export function BibleReader({
             >
               {translationLabel}
             </button>
-            <ScriptureCheckBadge
-              check={check}
-              translationName={
-                reading.translation.value?.name ?? translationLabel
-              }
-              chapterLabel={`${reading.bookName.value} ${reading.chapterNumber.value}`}
-            />
           </div>
           <div className="sb-bible-reader-actions">
             {embed ? embedActions : null}
@@ -894,22 +878,6 @@ export function BibleReader({
             )}
             {/* The old reader's chapter actions, in its order. */}
             {!embed && saveButtons}
-            {!embed && (
-              <button
-                type="button"
-                className={`sb-bible-reader-action-button${ui.pane.value === "discover" ? " sb-bible-reader-save-button-saved" : ""}`}
-                aria-label={t("discover", { defaultValue: "Discover" })}
-                title={t("discover", { defaultValue: "Discover" })}
-                aria-pressed={ui.pane.value === "discover"}
-                onClick={(e: MouseEvent) => {
-                  e.stopPropagation();
-                  ui.pane.value =
-                    ui.pane.value === "discover" ? "none" : "discover";
-                }}
-              >
-                <span className="material-symbols-outlined">explore</span>
-              </button>
-            )}
             {extensionButtons}
             {!embed && shareButton}
             {!embed && active && canPlay && (
@@ -951,9 +919,6 @@ export function BibleReader({
                 {reading.chapterNumber.value}
               </span>
             </h2>
-            {bookPicker(
-              "sb-bible-reader-book-picker sb-bible-reader-book-picker-mobile"
-            )}
             {body()}
           </div>
           {/* The old reader's Discover card in the chapter — not while a side pane is open: it would repeat the pane
