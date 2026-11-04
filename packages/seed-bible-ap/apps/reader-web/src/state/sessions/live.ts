@@ -12,6 +12,7 @@ import {
   type SessionState,
 } from "../../backend/room";
 import type { Reading } from "../reading/reading";
+import { routeOf } from "../reading/route";
 import {
   canDecorate,
   canNavigate,
@@ -391,7 +392,7 @@ export function createLiveSession(deps: LiveDeps) {
     if (!sessionId.value || !code.value || typeof location === "undefined")
       return null;
     const r = deps.reading();
-    return `${location.origin}/read/${r.translationId.value}/${r.bookId.value}/${r.chapterNumber.value}?session=${sessionId.value}&code=${code.value}`;
+    return `${location.origin}${routeOf({ translationId: r.translationId.value, bookId: r.bookId.value, chapterNumber: r.chapterNumber.value })}?session=${sessionId.value}&code=${code.value}`;
   });
 
   return {

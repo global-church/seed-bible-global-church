@@ -56,7 +56,7 @@ describe("the cutover surface", () => {
   it("a chapter URL carries Open Graph and a canonical link for whoever shares it", async () => {
     vi.stubGlobal("fetch", bibleApi);
     const res = await worker.fetch(
-      new Request("https://seed-reader.faithnet.io/read/BSB/JHN/3", {
+      new Request("https://seed-reader.faithnet.io/en/BSB/john/3", {
         headers: { accept: "text/html" },
       }),
       env
@@ -67,14 +67,33 @@ describe("the cutover surface", () => {
       '<meta property="og:title" content="John 3 · BSB · Seed Bible" />'
     );
     expect(html).toContain(
-      '<meta property="og:url" content="https://seed-reader.faithnet.io/read/BSB/JHN/3" />'
+      '<meta property="og:url" content="https://seed-reader.faithnet.io/en/BSB/john/3" />'
     );
     expect(html).toContain(
-      '<link rel="canonical" href="https://seed-reader.faithnet.io/read/BSB/JHN/3" />'
+      '<link rel="canonical" href="https://seed-reader.faithnet.io/en/BSB/john/3" />'
     );
     expect(html).toContain(
       '<meta property="og:image" content="https://seed-reader.faithnet.io/og.jpg" />'
     );
+  });
+
+  it("this reader's former address, and every other way of writing one, is sent for good to seedbible.org's", async () => {
+    for (const [from, to] of [
+      ["/read/BSB/JHN/3?v=16", "/en/BSB/john/3?verse=16"],
+      ["/BSB/john/3", "/en/BSB/john/3"],
+      ["/en/BSB/mathew/5", "/en/BSB/matthew/5"],
+    ]) {
+      const res = await worker.fetch(
+        new Request(`https://seed-reader.faithnet.io${from}`, {
+          headers: { accept: "text/html" },
+        }),
+        env
+      );
+      expect(res.status).toBe(308);
+      expect(res.headers.get("location")).toBe(
+        `https://seed-reader.faithnet.io${to}`
+      );
+    }
   });
 
   it("robots points at the sitemap, and the sitemap lists every chapter of the sitemap translations", async () => {
@@ -96,12 +115,12 @@ describe("the cutover surface", () => {
     const xml = await res.text();
     expect(xml).toContain("<loc>https://seed-reader.faithnet.io/</loc>");
     expect(xml).toContain(
-      "<loc>https://seed-reader.faithnet.io/read/BSB/JHN/1</loc>"
+      "<loc>https://seed-reader.faithnet.io/en/BSB/john/1</loc>"
     );
     expect(xml).toContain(
-      "<loc>https://seed-reader.faithnet.io/read/BSB/JHN/2</loc>"
+      "<loc>https://seed-reader.faithnet.io/en/BSB/john/2</loc>"
     );
-    expect(xml).not.toContain("/read/BSB/JHN/3</loc>");
+    expect(xml).not.toContain("/en/BSB/john/3</loc>");
   });
 
   it("the sitemap still answers (with the home page alone) when the Bible API is down", async () => {
@@ -138,7 +157,7 @@ describe("the cutover surface", () => {
     // A real history rewrites the URL on the first navigation (the route is pushed without the query), so the
     // link's parameters must be read before that: the stub does what the browser does.
     const loc = {
-      pathname: "/read/BSB/JHN/3",
+      pathname: "/en/BSB/john/3",
       search: "?embed=minimal&theme=dark&v=16-17&offering=urn:seed:offering:x",
     };
     const navigate = (_s: unknown, _t: string, url?: string | URL | null) => {

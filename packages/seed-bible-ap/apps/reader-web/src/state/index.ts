@@ -906,6 +906,9 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
     }
     const fromUrl =
       typeof location !== "undefined" ? parseRoute(location.pathname) : null;
+    // The address's language segment (`/es/spa_r09/john/3`) is the interface language, when we have it.
+    if (fromUrl?.language && AVAILABLE_LANGUAGES.includes(fromUrl.language))
+      void setLanguage(fromUrl.language);
     // Read before the first tab opens: opening it moves the address to the chapter (pushRoute).
     const atRoot =
       !fromUrl &&

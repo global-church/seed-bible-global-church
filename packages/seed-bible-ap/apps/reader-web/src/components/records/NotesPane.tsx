@@ -14,7 +14,7 @@ import { estateById } from "../../../../../estate/faithnet";
 import { useI18n } from "../../i18n";
 import type { Note } from "../../state/records/annotations";
 import { isHtmlNote, sanitizeNoteHtml } from "./noteHtml";
-import { parseRoute } from "../../state/reading/route";
+import { parseRoute, routeOf } from "../../state/reading/route";
 
 import { retryChunkImport } from "../../sw/retryChunkImport";
 
@@ -202,10 +202,10 @@ function NoteItem({
   const shareLink = () => {
     const rec = state.publishing.recordOf(note.id);
     const r = state.reading;
-    const base = `${location.origin}/read/${encodeURIComponent(r.translationId.value)}/${encodeURIComponent(r.bookId.value)}/${r.chapterNumber.value}`;
+    const base = `${location.origin}${routeOf({ translationId: r.translationId.value, bookId: r.bookId.value, chapterNumber: r.chapterNumber.value })}`;
     const v = note.whole
       ? ""
-      : `v=${note.start === note.end ? `${note.start}` : `${note.start}-${note.end}`}`;
+      : `verse=${note.start === note.end ? `${note.start}` : `${note.start}-${note.end}`}`;
     const o = rec ? `offering=${encodeURIComponent(rec.descriptorId)}` : "";
     const q = [v, o].filter(Boolean).join("&");
     return q ? `${base}?${q}` : base;

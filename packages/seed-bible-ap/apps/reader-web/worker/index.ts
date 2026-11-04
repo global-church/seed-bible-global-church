@@ -61,7 +61,7 @@ export default {
         for (const b of books?.books ?? [])
           for (let c = 1; c <= b.numberOfChapters; c++)
             urls.push(
-              `${url.origin}${routeOf({ translationId: t, bookId: b.id, chapterNumber: c })}`
+              `${url.origin}${routeOf({ translationId: t, bookId: b.id, chapterNumber: c }, "en")}`
             );
       }
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`;
@@ -77,10 +77,10 @@ export default {
     const isNavigation =
       request.method === "GET" &&
       (request.headers.get("accept") ?? "").includes("text/html");
-    // An old reader's `?verse=` on a reading path goes to `?v=` here. Its other links (`/en/BSB/john/3`) do not reach
-    // the Worker (wrangler.toml runs it first only for /read/* and /shared/*): the page turns them (state/index.ts).
+    // Any other way of writing a chapter's address (this reader's former `/read/…?v=`, the three-segment form, a
+    // book by another name) is sent, for good, to the canonical `/{lang}/{translation}/{book-slug}/{chapter}?verse=`.
     const legacy = isNavigation ? legacyTarget(url.pathname, url.search) : null;
-    if (legacy) return Response.redirect(new URL(legacy, url).toString(), 302);
+    if (legacy) return Response.redirect(new URL(legacy, url).toString(), 308);
     const shared = parseSharedPath(url.pathname);
     if (shared && isNavigation) {
       const shell = await env.ASSETS.fetch(
