@@ -2,6 +2,7 @@
 // when chosen). `useI18n()` is the hook the ported components call; the language signal re-renders them.
 import i18next from "i18next";
 import { signal } from "@preact/signals";
+import { language } from "./language";
 import en from "./en.json";
 
 const locales = import.meta.glob("./*.json") as Record<
@@ -17,7 +18,7 @@ const RTL = new Set(["ar", "fa", "he", "ur", "ps", "sd", "ug", "yi"]);
 export const isRightToLeftLanguage = (lang: string) =>
   RTL.has(lang.split("-")[0] ?? lang);
 
-export const language = signal("en");
+export { language } from "./language";
 const KEY = "sbr.language";
 
 let ready: Promise<void> | null = null;

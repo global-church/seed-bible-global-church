@@ -4,9 +4,13 @@
 // `?verse=16-18` for a verse or range. A three-segment address (no language) and this reader's former
 // `/read/{translation}/{BOOK}/{chapter}?v=` are redirect entry points (legacyRoute.ts), never a second canonical
 // shape. Back and forward move the reader; the reader moving pushes history.
-import { findClosestBookId, getBookId, getBookSlug } from "@seed/scripture/books";
+import {
+  findClosestBookId,
+  getBookId,
+  getBookSlug,
+} from "@seed/scripture/books";
 import type { BookId } from "@seed/scripture/books";
-import { language } from "../../i18n";
+import { language } from "../../i18n/language";
 import type { Reading } from "./reading";
 
 export interface ChapterRoute {
@@ -60,7 +64,10 @@ export function parseRoute(pathname: string): ChapterRoute | null {
   }
   if (segs.length !== 3 && segs.length !== 4) return null;
   const four = segs.length === 4;
-  if (four && (!LANG.test(segs[0]!) || SHARED_PAGE_SEGMENTS.has(segs[1]!.toLowerCase())))
+  if (
+    four &&
+    (!LANG.test(segs[0]!) || SHARED_PAGE_SEGMENTS.has(segs[1]!.toLowerCase()))
+  )
     return null;
   if (!four && OWN_SEGMENTS.has(segs[0]!.toLowerCase())) return null;
   const translationId = segs[four ? 1 : 0]!;
