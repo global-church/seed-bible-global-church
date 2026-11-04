@@ -4,7 +4,7 @@
 //   pnpm parity                                  ours = http://localhost:5185 (pnpm dev:web --mode faithnet)
 //   PARITY_OURS=https://seed-bible.global-church.workers.dev pnpm parity
 //   PARITY_ONLY=F01,F02 pnpm parity              some screens
-//   PARITY_OURS_CHAPTER=/en/BSB/genesis/1        once this reader serves their addresses
+//   PARITY_OURS_CHAPTER=/read/BSB/GEN/1          the former address (it redirects)
 //   PARITY_THEIRS_STATE=.parity-theirs.json      a saved Playwright storage state for the signed-in screens
 //
 // Output goes to parity/ (git-ignored): <width>-<id>-theirs.png, -ours.png, -diff.png and summary.md / summary.json.
