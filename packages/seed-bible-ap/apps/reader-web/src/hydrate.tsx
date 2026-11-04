@@ -45,7 +45,8 @@ export function hydrationProblem(
   const shell = root.firstElementChild;
   if (!shell) return "no markup";
   const forRoute = shell.getAttribute(SSR_ROUTE_ATTR);
-  if (forRoute !== routeOf(route))
+  // Both sides name the address in its own language, else "en" (what the server renders for a bare route).
+  if (forRoute !== routeOf(route, route.language ?? "en"))
     return `markup is for ${forRoute ?? "no route"}`;
   const build = shell.getAttribute(SSR_BUILD_ATTR);
   if (build !== input.buildId)

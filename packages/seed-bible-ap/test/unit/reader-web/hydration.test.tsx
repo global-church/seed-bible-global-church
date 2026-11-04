@@ -76,7 +76,7 @@ describe("hydration", () => {
     expect(w.records).toEqual([]);
     expect(root.innerHTML).toBe(html);
     expect(root.firstElementChild!.getAttribute(SSR_ROUTE_ATTR)).toBe(
-      "/read/BSB/JHN/3"
+      "/en/BSB/john/3"
     );
     expect(root.querySelector('[data-verse-number="16"]')).not.toBeNull();
   });
@@ -90,7 +90,7 @@ describe("hydration", () => {
         seed: page.seed,
         buildId: BUILD_ID,
       })
-    ).toBe("markup is for /read/BSB/JHN/3");
+    ).toBe("markup is for /en/BSB/john/3");
     const outcome = hydrateChapter(root, {
       pathname: location.pathname,
       seed: page.seed,

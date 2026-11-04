@@ -32,6 +32,8 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("share links", () => {
   it("read the verses a link names, and refuse nonsense", () => {
+    expect(versesOf("?verse=16")).toEqual([16, 16]);
+    expect(versesOf("?verse=16-18")).toEqual([16, 18]);
     expect(versesOf("?v=16")).toEqual([16, 16]);
     expect(versesOf("?v=16-18")).toEqual([16, 18]);
     expect(versesOf("?embed=minimal&v=2-3")).toEqual([2, 3]);
@@ -43,10 +45,10 @@ describe("share links", () => {
   it("build the link on this origin", () => {
     const r = { translationId: "BSB", bookId: "JHN", chapterNumber: 3 };
     expect(shareUrl("https://seed-reader.faithnet.io", r, 16)).toBe(
-      "https://seed-reader.faithnet.io/read/BSB/JHN/3?v=16"
+      "https://seed-reader.faithnet.io/en/BSB/john/3?verse=16"
     );
     expect(shareUrl("https://x.test", r, 16, 18)).toBe(
-      "https://x.test/read/BSB/JHN/3?v=16-18"
+      "https://x.test/en/BSB/john/3?verse=16-18"
     );
   });
 

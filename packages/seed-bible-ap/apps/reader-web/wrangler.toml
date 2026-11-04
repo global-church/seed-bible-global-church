@@ -10,7 +10,9 @@ compatibility_flags = ["nodejs_compat"]
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = ["/read/*", "/shared/*", "/sitemap.xml", "/robots.txt"]
+# Every path: a chapter address starts with its language (/en/BSB/genesis/1), so the Worker must see them all; it
+# hands anything that is not a chapter, a shared page, the sitemap or robots straight to the asset.
+run_worker_first = true
 
 [env.faithnet]
 name = "seed-bible-reader-web-faithnet"
@@ -27,7 +29,9 @@ custom_domain = true
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = ["/read/*", "/shared/*", "/sitemap.xml", "/robots.txt"]
+# Every path: a chapter address starts with its language (/en/BSB/genesis/1), so the Worker must see them all; it
+# hands anything that is not a chapter, a shared page, the sitemap or robots straight to the asset.
+run_worker_first = true
 
 # THE FAMILIAR-FIRST FORK (global-church/seed-bible-global-church, branch familiar-first): reader-web alone, on
 # Global.Church's Cloudflare account at seed-bible.global-church.workers.dev, using the faithnet estate's reader
@@ -45,4 +49,6 @@ A2A_BASE = "https://seed-reader-a2a.faithnet.io"
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = ["/read/*", "/shared/*", "/sitemap.xml", "/robots.txt"]
+# Every path: a chapter address starts with its language (/en/BSB/genesis/1), so the Worker must see them all; it
+# hands anything that is not a chapter, a shared page, the sitemap or robots straight to the asset.
+run_worker_first = true

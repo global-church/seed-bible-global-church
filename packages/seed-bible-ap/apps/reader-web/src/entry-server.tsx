@@ -69,17 +69,23 @@ export function chapterDescription(
 export function ChapterShell({
   chapter,
   buildId = BUILD_ID,
+  language,
 }: {
   chapter: TranslationBookChapter;
   buildId?: string;
+  /** The language segment of the address being rendered (the client checks the markup against its own address). */
+  language?: string;
 }) {
   const label = chapter.translation.shortName ?? chapter.translation.id;
   const attrs = {
-    [SSR_ROUTE_ATTR]: routeOf({
-      translationId: chapter.translation.id,
-      bookId: chapter.book.id,
-      chapterNumber: chapter.chapter.number,
-    }),
+    [SSR_ROUTE_ATTR]: routeOf(
+      {
+        translationId: chapter.translation.id,
+        bookId: chapter.book.id,
+        chapterNumber: chapter.chapter.number,
+      },
+      language ?? "en"
+    ),
     [SSR_BUILD_ATTR]: buildId,
   };
   return (
@@ -137,9 +143,12 @@ export function ChapterShell({
 /** The chapter's markup for `#root`, without any interactive state. */
 export function renderChapterShell(
   chapter: TranslationBookChapter,
-  buildId = BUILD_ID
+  buildId = BUILD_ID,
+  language?: string
 ): string {
-  return render(<ChapterShell chapter={chapter} buildId={buildId} />);
+  return render(
+    <ChapterShell chapter={chapter} buildId={buildId} language={language} />
+  );
 }
 
 /** The text of a verse range, for a shared link's title and description. */
@@ -178,7 +187,7 @@ export async function renderChapterPage(
       : `${chapter.book.name} ${chapter.chapter.number}`;
     const shared = verses ? versesDescription(chapter, verses) : "";
     return {
-      html: renderChapterShell(chapter),
+      html: renderChapterShell(chapter, undefined, route.language),
       title: `${ref} · ${label} · Seed Bible`,
       description: shared || chapterDescription(chapter),
       lang: chapter.translation.language?.slice(0, 2) ?? "en",

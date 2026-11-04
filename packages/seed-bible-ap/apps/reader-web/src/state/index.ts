@@ -905,6 +905,9 @@ export function createReaderState(opts: ReaderStateOptions = {}) {
     }
     const fromUrl =
       typeof location !== "undefined" ? parseRoute(location.pathname) : null;
+    // The address's language segment (`/es/spa_r09/juan/3`) is the interface language, when we have it.
+    if (fromUrl?.language && AVAILABLE_LANGUAGES.includes(fromUrl.language))
+      void setLanguage(fromUrl.language);
     // Read everything the link carries BEFORE the first navigation: opening the tab rewrites the URL (pushRoute),
     // and a `?v=` or `?offering=` read after that is gone.
     const shared =
