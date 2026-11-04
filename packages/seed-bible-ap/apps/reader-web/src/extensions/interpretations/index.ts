@@ -482,6 +482,7 @@ export function writingsItems(
 const interpretations: ExtensionRegistration = {
   id: "interpretations",
   defaultEnabled: false,
+  labs: true,
   label: "Interpretations & writings",
   description:
     "What a translation decided at a verse and why, the alternatives it kept, and the writings of the book's period and its later reception — in Discover, with a pane for the full record.",

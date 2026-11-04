@@ -3,7 +3,7 @@
 // cleanups. What an extension may add: a verse-toolbar tool, a Discover provider, a toolbar item, a chapter-header
 // button, a side pane. It emits intents through the app's state; it never fetches a third party with a key (the Bible
 // API and the serving plane through the workspace are the only lanes).
-import { signal, type Signal } from "@preact/signals";
+import { computed, effect, signal, type Signal } from "@preact/signals";
 import type { ComponentChildren } from "preact";
 import type { ReaderStores } from "../../backend/offline/db";
 import type {
@@ -164,6 +164,9 @@ export interface ExtensionRegistration {
   description?: string;
   /** On by default for a new reader. */
   defaultEnabled?: boolean;
+  /** Part of Labs (what this reader adds beyond seedbible.org): installed only while Settings → Labs is on, and
+   *  listed under Extensions only then. The enabled set remembers it either way. */
+  labs?: boolean;
   /** The settings it offers under Configure, by key. */
   settings?: Record<string, SettingSpec>;
   init: (context: ExtensionContext) => Iterable<Cleanup>;
@@ -260,12 +263,21 @@ export function createExtensionHost(stores: ReaderStores) {
     }
   }
 
+  /** Whether Labs lets this extension run now (a non-Labs one always may). */
+  const allowed = (reg: ExtensionRegistration) =>
+    !reg.labs || (state?.settings.labs.value ?? false);
+  /** The extensions a reader can see and install now: everything, or without the Labs ones while Labs is off. */
+  const visible = computed(() =>
+    registered.value.filter((r) => !r.labs || labsOn.value)
+  );
+  const labsOn = signal(false);
+
   function register(reg: ExtensionRegistration) {
     registered.value = [
       ...registered.value.filter((r) => r.id !== reg.id),
       reg,
     ];
-    if (state && enabled.value.has(reg.id)) install(reg.id);
+    if (state && enabled.value.has(reg.id) && allowed(reg)) install(reg.id);
   }
 
   function context(id: string): ExtensionContext {
@@ -329,7 +341,8 @@ export function createExtensionHost(stores: ReaderStores) {
     if (on) next.add(id);
     else next.delete(id);
     enabled.value = next;
-    if (on) install(id);
+    if (on && allowed(registered.value.find((r) => r.id === id)!))
+      install(id);
     else uninstall(id);
     await stores.prefs.set(KEY, [...next]);
   }
@@ -344,11 +357,21 @@ export function createExtensionHost(stores: ReaderStores) {
         .filter((r) => r.defaultEnabled !== false)
         .map((r) => r.id);
     enabled.value = new Set(ids);
-    for (const id of ids) install(id);
+    for (const id of ids)
+      if (allowed(registered.value.find((r) => r.id === id)!)) install(id);
+    // Labs turned on installs the Labs extensions in the enabled set; turned off, they come out again.
+    effect(() => {
+      const on = s.settings.labs.value;
+      labsOn.value = on;
+      for (const r of registered.value)
+        if (r.labs && enabled.value.has(r.id))
+          on ? install(r.id) : uninstall(r.id);
+    });
   }
 
   return {
     registered,
+    visible,
     enabled,
     errors,
     verseTools: verseTools.items,

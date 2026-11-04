@@ -8,7 +8,11 @@ import { sharedRefOf } from "../../state/social/sharedPage";
 import type { Offering } from "../../state/social/discover";
 import { DiscoverPanel } from "../social/DiscoverPanel";
 import { PresenceGutter, colorOf } from "../sessions/PresenceGutter";
-import { checkLook, verseCheckTitle } from "./ScriptureCheck";
+import {
+  ScriptureCheckBadge,
+  checkLook,
+  verseCheckTitle,
+} from "./ScriptureCheck";
 import { useEffect, useRef, useState } from "preact/hooks";
 import type { ChapterVerse, TranslationBookChapter } from "../../backend/bible";
 import type { ReaderState } from "../../state";
@@ -863,6 +867,14 @@ export function BibleReader({
             >
               {translationLabel}
             </button>
+            {/* The Scripture check badge and its sheet are Labs; off, the pill's tooltip carries the state. */}
+            {settings.labs.value && (
+              <ScriptureCheckBadge
+                check={check}
+                translationName={translationName}
+                chapterLabel={`${reading.bookName.value} ${reading.chapterNumber.value}`}
+              />
+            )}
           </div>
           <div className="sb-bible-reader-actions">
             {embed ? embedActions : null}

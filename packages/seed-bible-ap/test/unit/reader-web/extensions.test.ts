@@ -28,7 +28,10 @@ import type { ReaderState } from "../../../apps/reader-web/src/state";
 import type { TranslationBookChapter } from "../../../apps/reader-web/src/backend/bible";
 
 const fakeState = () =>
-  ({ ui: { pane: { value: "none" as string } } }) as unknown as ReaderState;
+  ({
+    ui: { pane: { value: "none" as string } },
+    settings: { labs: { value: false } },
+  }) as unknown as ReaderState;
 
 describe("the extension host", () => {
   it("installs what is enabled, cleans up on disable, and remembers the set", async () => {

@@ -342,7 +342,11 @@ describe("what a heading or the title opens", () => {
   it("is the Story pane, titled by the heading or the book, and it goes with the extension", async () => {
     const host = createExtensionHost(memoryStores());
     host.register(story);
-    const state = { ui: { pane: { value: "none" } } } as unknown as ReaderState;
+    // Story is a Labs extension: the switch is on here.
+    const state = {
+      ui: { pane: { value: "none" } },
+      settings: { labs: { value: true } },
+    } as unknown as ReaderState;
     await host.bind(state);
     // Off for a new reader (seedbible.org's default set); on once installed from Settings → Extensions.
     expect(host.headingTools.value).toHaveLength(0);

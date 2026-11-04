@@ -525,6 +525,7 @@ function Pane({ state }: { state: ReaderState }) {
 const companion: ExtensionRegistration = {
   id: "companion",
   defaultEnabled: false,
+  labs: true,
   label: "Study companion",
   description:
     "Ask about a verse; the Scripture agent answers from what it holds about it, cited and checked, and says who answered.",
