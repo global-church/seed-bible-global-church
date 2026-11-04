@@ -258,10 +258,10 @@ The pill → `?selector=open` with the translation list first.
 
 ### S01 Profile
 
-`?profile=open`: a card with the avatar (a letter, a + badge to change the picture), the user id ("a7e8072b"), the
+`?profile=open`: a card with the avatar (a letter, a + badge to change the picture), the user id, the
 email; rows **Your content** ("Create and manage your content") and **Friends** ("Add friends and see what they're
 reading"), each with an arrow; **Sign out** (red outline); **Edit profile** (pencil) top-right of the card. The
-sidebar's profile circle still reads "Open profile (Anonymous)" signed in (their bug).
+sidebar's profile circle keeps its signed-out label.
 
 ### S02 Edit profile
 
@@ -290,7 +290,7 @@ playlists you make will show up here." **Back**, **Close**.
 
 `?friends=open`: "Friends — No friends yet. Share your friend link, or add someone by their user ID."; **Add a friend**
 with a **User ID** field and **Send request**; "Share your friend link. Anyone who opens it can send you a request."
-**Copy your friend link**; "Your user ID a7e8072b-…" **Copy your user ID**.
+**Copy your friend link**; "Your user ID …" **Copy your user ID**.
 
 ### S10 Session
 
