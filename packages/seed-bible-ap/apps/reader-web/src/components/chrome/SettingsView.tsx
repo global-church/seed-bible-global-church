@@ -1,13 +1,17 @@
 // SETTINGS — the old reader's (packages/seed-bible Tabs `Settings` and SettingsPage): the ⚙ at the bottom of the
-// sidebar turns the sidebar into the Settings list — Account settings, Display & Theme, Toolbar, Extensions, Install
-// App, Launch tutorial, Customize, About Seed Bible, then Language and the version — and each row opens its page in
-// the sidebar, with ← back to the list. The pages hold the same cards as the Account settings pane.
+// sidebar turns the sidebar into the Settings list — seedbible.org's Account, Display & Theme, Extensions, Install
+// App, Launch tutorial, About Seed Bible, then this reader's Toolbar and Customize, then Language (with its flag),
+// Report a bug and the version — and each row opens its page in the sidebar, with ← back to the list. The pages hold
+// the same cards as the Account settings pane.
 import { HighlightColorsCard } from "./HighlightColorsCard";
 import type { ComponentChildren } from "preact";
 import type { ReaderState } from "../../state";
 import type { SettingsPage } from "../../state";
 import { AVAILABLE_LANGUAGES, setLanguage, useI18n } from "../../i18n";
-import { BUILD_ID } from "../../build";
+import { LANG_META } from "../../i18n/languageMeta";
+import { APP_VERSION, BUILD_ID } from "../../build";
+import { SearchableSelect } from "./SearchableSelect";
+import { useState } from "preact/hooks";
 import {
   install,
   installPrompt,
@@ -29,18 +33,58 @@ import {
   TutorialsCard,
 } from "./AccountPane";
 
-/** A language in its own words ("Français"), as the old reader's picker lists it. */
-function languageName(code: string): string {
-  try {
-    const n = new Intl.DisplayNames([code], { type: "language" }).of(code);
-    return n ? n.charAt(0).toLocaleUpperCase(code) + n.slice(1) : code;
-  } catch {
-    return code;
-  }
+/** Where a bug about this reader goes: the fork's issues (seedbible.org's button opens AO Lab's form). */
+const REPORT_A_BUG_URL =
+  "https://github.com/global-church/seed-bible-global-church/issues/new";
+
+/** The language's flag beside its name, as seedbible.org's picker draws it. */
+function FlagImg({ cc }: { cc: string }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${cc}.png`}
+      alt=""
+      style={{
+        width: "1.25rem",
+        height: "1.25rem",
+        borderRadius: "50%",
+        objectFit: "cover",
+        flexShrink: 0,
+      }}
+    />
+  );
+}
+
+/** "v0.0.1 · 517285f", copied to the clipboard on a tap (for a bug report). */
+function VersionLine() {
+  const { t } = useI18n();
+  const [copied, setCopied] = useState(false);
+  const text = t("app-version", {
+    version: APP_VERSION,
+    commit: BUILD_ID,
+    defaultValue: "v{{version}} · {{commit}}",
+  });
+  return (
+    <button
+      type="button"
+      className="sb-settings-version"
+      title={t("copy", { defaultValue: "Copy" })}
+      onClick={() => {
+        void navigator.clipboard
+          ?.writeText(text)
+          .then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+          })
+          .catch(() => undefined);
+      }}
+    >
+      {copied ? t("copied", { defaultValue: "Copied" }) : text}
+    </button>
+  );
 }
 
 interface Row {
-  id: Exclude<SettingsPage, "main">;
+  id: Exclude<SettingsPage, "main"> | "about";
   icon: string;
   label: string;
 }
@@ -49,21 +93,17 @@ export function SettingsView({ state }: { state: ReaderState }) {
   const { t, language } = useI18n();
   const page = state.ui.settingsView.value ?? "main";
   const go = (p: SettingsPage | null) => (state.ui.settingsView.value = p);
+  // seedbible.org's six rows in its order, then this reader's own two.
   const rows: Row[] = [
     {
       id: "account",
       icon: "person",
-      label: t("account-settings", { defaultValue: "Account settings" }),
+      label: t("account", { defaultValue: "Account" }),
     },
     {
       id: "display",
       icon: "contrast",
       label: t("display-and-theme", { defaultValue: "Display & Theme" }),
-    },
-    {
-      id: "toolbar",
-      icon: "tune",
-      label: t("toolbar", { defaultValue: "Toolbar" }),
     },
     {
       id: "extensions",
@@ -83,6 +123,16 @@ export function SettingsView({ state }: { state: ReaderState }) {
       id: "tutorial",
       icon: "school",
       label: t("launch-tutorial", { defaultValue: "Launch tutorial" }),
+    },
+    {
+      id: "about",
+      icon: "info",
+      label: t("about-title", { defaultValue: "About Seed Bible" }),
+    },
+    {
+      id: "toolbar",
+      icon: "tune",
+      label: t("toolbar", { defaultValue: "Toolbar" }),
     },
     {
       id: "customize",
@@ -185,7 +235,11 @@ export function SettingsView({ state }: { state: ReaderState }) {
                   <li key={r.id}>
                     <button
                       className="sb-settings-nav-item"
-                      onClick={() => go(r.id)}
+                      onClick={() =>
+                        r.id === "about"
+                          ? (state.ui.pane.value = "about")
+                          : go(r.id)
+                      }
                     >
                       <span className="sb-settings-nav-icon">
                         <span className="material-symbols-outlined">
@@ -199,22 +253,6 @@ export function SettingsView({ state }: { state: ReaderState }) {
                     </button>
                   </li>
                 ))}
-                <li>
-                  <button
-                    className="sb-settings-nav-item"
-                    onClick={() => (state.ui.pane.value = "about")}
-                  >
-                    <span className="sb-settings-nav-icon">
-                      <span className="material-symbols-outlined">info</span>
-                    </span>
-                    <span className="sb-settings-nav-label">
-                      {t("about-title", { defaultValue: "About Seed Bible" })}
-                    </span>
-                    <span className="material-symbols-outlined rtl-mirror">
-                      chevron_right
-                    </span>
-                  </button>
-                </li>
               </ul>
             </section>
             <section className="sb-settings-section">
@@ -224,22 +262,37 @@ export function SettingsView({ state }: { state: ReaderState }) {
               >
                 {t("language", { defaultValue: "Language" })}
               </label>
-              <select
+              <SearchableSelect
                 id="sb-settings-language"
-                className="sb-settings-language-select"
+                buttonClassName="sb-settings-language-select"
                 value={language}
-                onChange={(e) =>
-                  void setLanguage((e.target as HTMLSelectElement).value)
+                options={AVAILABLE_LANGUAGES.map((code) => {
+                  const meta = LANG_META[code];
+                  return {
+                    id: code,
+                    label: meta?.display ?? code.toUpperCase(),
+                    leading: meta?.cc ? <FlagImg cc={meta.cc} /> : undefined,
+                  };
+                })}
+                onChange={(code) => void setLanguage(code)}
+                searchPlaceholder={t("search-languages", {
+                  defaultValue: "Search languages...",
+                })}
+                emptyLabel={t("no-languages-found", {
+                  defaultValue: "No languages found",
+                })}
+              />
+              <button
+                type="button"
+                className="sb-settings-action-button"
+                onClick={() =>
+                  window.open(REPORT_A_BUG_URL, "_blank", "noopener")
                 }
               >
-                {AVAILABLE_LANGUAGES.map((l) => (
-                  <option key={l} value={l}>
-                    {languageName(l)}
-                  </option>
-                ))}
-              </select>
+                {t("report-a-bug", { defaultValue: "Report a bug" })}
+              </button>
             </section>
-            <p className="sb-settings-version">v{BUILD_ID}</p>
+            <VersionLine />
           </div>
         );
     }

@@ -5529,14 +5529,14 @@ export const MORE_FLOWS: Flow[] = [
         .locator(".sb-settings-nav-label")
         .allInnerTexts();
       const want = [
-        "Account settings",
+        "Account",
         "Display & Theme",
-        "Toolbar",
         "Extensions",
         "Install App",
         "Launch tutorial",
-        "Customize",
         "About Seed Bible",
+        "Toolbar",
+        "Customize",
       ];
       if (labels.join() !== want.join())
         throw new Error(`Settings lists: ${labels.join(", ")}`);
