@@ -29,20 +29,12 @@ export function verseCheckTitle(t: T): (s: VerseCheck) => string {
             });
 }
 
-export function ScriptureCheckBadge({
-  check,
-  translationName,
-  chapterLabel,
-}: {
-  check: ChapterCheck | null;
-  translationName: string;
-  chapterLabel: string;
-}) {
-  const { t } = useI18n();
-  const [open, setOpen] = useState(false);
-  if (!check) return null;
-  const look =
-    check.status === "verified"
+/** The check's state in a word, with its icon and tone (the badge, and the translation pill's tooltip). */
+export function checkLook(
+  check: ChapterCheck,
+  t: ReturnType<typeof useI18n>["t"]
+): { icon: string; label: string; tone: string } {
+  return check.status === "verified"
       ? {
           icon: "verified",
           label: t("scripture-verified", { defaultValue: "Verified" }),
@@ -75,6 +67,21 @@ export function ScriptureCheckBadge({
                 }),
                 tone: "none",
               };
+}
+
+export function ScriptureCheckBadge({
+  check,
+  translationName,
+  chapterLabel,
+}: {
+  check: ChapterCheck | null;
+  translationName: string;
+  chapterLabel: string;
+}) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  if (!check) return null;
+  const look = checkLook(check, t);
   return (
     <>
       <button
