@@ -12,18 +12,18 @@ afterEach(() => {
 });
 
 const ROWS = [
-  "Account settings",
+  "Account",
   "Display & Theme",
-  "Toolbar",
   "Extensions",
   "Install App",
   "Launch tutorial",
-  "Customize",
   "About Seed Bible",
+  "Toolbar",
+  "Customize",
 ];
 
 describe("Settings in the sidebar", () => {
-  it("opens in place of the tabs, in the old reader's order, and ✕ brings the tabs back", async () => {
+  it("opens in place of the tabs, in seedbible.org's order, and ✕ brings the tabs back", async () => {
     const t = await createTestReaderState({ identity: null });
     const r = renderInHost(<TabsSidebar state={t.state} />);
     expect(r.queryByText("Tabs")).not.toBeNull();
@@ -44,7 +44,7 @@ describe("Settings in the sidebar", () => {
     const r = renderInHost(<TabsSidebar state={t.state} />);
     fireEvent.click(r.getByRole("button", { name: "Open settings" }));
     const pages: Array<[string, RegExp]> = [
-      ["Account settings", /sign out/i],
+      ["Account", /sign out/i],
       ["Display & Theme", /line height/i],
       ["Toolbar", /the others are under more/i],
       ["Extensions", /extensions/i],
