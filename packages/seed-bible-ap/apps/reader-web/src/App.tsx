@@ -111,7 +111,7 @@ export function App({ state }: { state: ReaderState }) {
   }, [pane, collapsed, embed]);
   if (embed)
     return (
-      <div className="sb-app sb-app-embed">
+      <div className="sb-app sb-app-root sb-embed-minimal sb-app-embed">
         <main className="sb-app-main" ref={mainRef}>
           <PanesLayout state={state} />
         </main>
@@ -127,7 +127,9 @@ export function App({ state }: { state: ReaderState }) {
     );
   return (
     <div
-      className={`sb-app${full ? " sb-app-with-full-pane" : pane !== "none" ? " sb-app-with-pane" : ""}${collapsed ? " sb-app-sidebar-collapsed" : ""}`}
+      // `sb-app-root` is what the ported seedbible.org stylesheets key on (the desktop reader's centred column,
+      // the chapter margins); `sb-embed-minimal` marks the compact embed for the same rules.
+      className={`sb-app sb-app-root${full ? " sb-app-with-full-pane" : pane !== "none" ? " sb-app-with-pane" : ""}${collapsed ? " sb-app-sidebar-collapsed" : ""}`}
     >
       <TabsSidebar state={state} />
       {state.ui.sidebarDrawer.value && (
