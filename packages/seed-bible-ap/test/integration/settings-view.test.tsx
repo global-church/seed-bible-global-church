@@ -25,6 +25,7 @@ const ROWS = [
 describe("Settings in the sidebar", () => {
   it("opens in place of the tabs, in the old reader's order, and ✕ brings the tabs back", async () => {
     const t = await createTestReaderState({ identity: null });
+    t.state.ui.sidebarCollapsed.value = false;
     const r = renderInHost(<TabsSidebar state={t.state} />);
     expect(r.queryByText("Tabs")).not.toBeNull();
     fireEvent.click(r.getByRole("button", { name: "Open settings" }));
@@ -41,6 +42,7 @@ describe("Settings in the sidebar", () => {
 
   it("each row opens its page with ← back to the list", async () => {
     const t = await createTestReaderState({});
+    t.state.ui.sidebarCollapsed.value = false;
     const r = renderInHost(<TabsSidebar state={t.state} />);
     fireEvent.click(r.getByRole("button", { name: "Open settings" }));
     const pages: Array<[string, RegExp]> = [
