@@ -307,7 +307,6 @@ export function PhoneNav({ state }: { state: ReaderState }) {
             ? { node: <Avatar state={state} /> }
             : { icon: "account_circle" })}
           active={active === "you"}
-          badge={state.outbox.pending.value}
           onClick={() => show(signedIn ? "profile" : "account")}
         />
         <Tab
