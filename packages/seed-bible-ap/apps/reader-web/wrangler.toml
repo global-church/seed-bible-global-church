@@ -28,3 +28,21 @@ directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 run_worker_first = ["/read/*", "/shared/*", "/sitemap.xml", "/robots.txt"]
+
+# THE FAMILIAR-FIRST FORK (global-church/seed-bible-global-church, branch familiar-first): reader-web alone, on
+# Global.Church's Cloudflare account at seed-bible.global-church.workers.dev, using the faithnet estate's reader
+# agent as it is. Pinned to GC's account and given no route, so it can never replace seed-reader.faithnet.io.
+# Deploy with `pnpm deploy:familiar`, never `--env faithnet` from this fork.
+[env.familiar]
+name = "seed-bible"
+account_id = "e53893130a2674f4c12faeace7d15d83"
+workers_dev = true
+
+[env.familiar.vars]
+A2A_BASE = "https://seed-reader-a2a.faithnet.io"
+
+[env.familiar.assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/read/*", "/shared/*", "/sitemap.xml", "/robots.txt"]
