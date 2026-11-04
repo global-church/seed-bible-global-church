@@ -1206,6 +1206,17 @@
   filter: brightness(0.95);
 }
 
+/* In the expanded sidebar's header the + is a plain icon beside Bookmarks and Saves, as seedbible.org draws it; the
+   filled orange + is the collapsed rail's. */
+.sb-sidebar-tabs-header-actions .sb-tab-add-button {
+  background: transparent;
+  color: color-mix(in srgb, var(--sb-font-color), transparent 25%);
+}
+.sb-sidebar-tabs-header-actions .sb-tab-add-button:hover {
+  filter: none;
+  background: color-mix(in srgb, var(--sb-font-color), transparent 90%);
+}
+
 .sb-tab-add-button .material-symbols-outlined {
   font-size: 1.375rem;
   font-weight: 500;

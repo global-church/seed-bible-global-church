@@ -208,19 +208,22 @@ export function TabsSidebar({ state }: { state: ReaderState }) {
               {t("tabs", { defaultValue: "Tabs" })}
             </h3>
             <div className="sb-sidebar-tabs-header-actions">
-              <button
-                type="button"
-                className="sb-sidebar-tabs-header-icon-button sb-sidebar-tabs-header-tasks-button"
-                aria-label={t("tasks", { defaultValue: "Tasks" })}
-                title={t("tasks", { defaultValue: "Tasks" })}
-                aria-pressed={state.ui.pane.value === "today"}
-                onClick={() =>
-                  (state.ui.pane.value =
-                    state.ui.pane.value === "today" ? "none" : "today")
-                }
-              >
-                <TasksIcon />
-              </button>
+              {/* seedbible.org's header signed out is Bookmarks, Saves, +; the Tasks mark is a signed-in thing there. */}
+              {state.session.value && (
+                <button
+                  type="button"
+                  className="sb-sidebar-tabs-header-icon-button sb-sidebar-tabs-header-tasks-button"
+                  aria-label={t("tasks", { defaultValue: "Tasks" })}
+                  title={t("tasks", { defaultValue: "Tasks" })}
+                  aria-pressed={state.ui.pane.value === "today"}
+                  onClick={() =>
+                    (state.ui.pane.value =
+                      state.ui.pane.value === "today" ? "none" : "today")
+                  }
+                >
+                  <TasksIcon />
+                </button>
+              )}
               <button
                 type="button"
                 className={`sb-sidebar-tabs-header-icon-button sb-sidebar-tabs-header-bookmarks-button${bookmarksOpen ? " sb-sidebar-tabs-header-bookmarks-button-active" : ""}`}
@@ -259,7 +262,7 @@ export function TabsSidebar({ state }: { state: ReaderState }) {
               </button>
               <button
                 type="button"
-                className="sb-tab-add-button"
+                className="sb-sidebar-tabs-header-icon-button sb-tab-add-button"
                 aria-label={t("new-tab", { defaultValue: "New tab" })}
                 title={t("new-tab", { defaultValue: "New tab" })}
                 onClick={() =>
@@ -505,8 +508,8 @@ export function TabsSidebar({ state }: { state: ReaderState }) {
         >
           <span className="material-symbols-outlined">settings</span>
         </button>
-        {/* The old reader's profile circle: your picture (or the account icon) opens Profile; changes still to send
-            are a count on its corner. */}
+        {/* The old reader's profile circle: your picture (or the account icon) opens Profile. What is still to send
+            is said inside Profile, not as a count on the circle (seedbible.org's is plain). */}
         <button
           type="button"
           className={`sb-sidebar-icon-button sb-sidebar-profile-button${state.session.value ? " sb-sidebar-profile-button-in" : ""}${state.ui.pane.value === "profile" ? " sb-sidebar-icon-button-selected" : ""}`}
@@ -531,11 +534,6 @@ export function TabsSidebar({ state }: { state: ReaderState }) {
             <Avatar state={state} />
           ) : (
             <span className="material-symbols-outlined">account_circle</span>
-          )}
-          {state.outbox.pending.value > 0 && (
-            <span className="sb-reader-toolbar-unread-indicator">
-              {state.outbox.pending.value}
-            </span>
           )}
         </button>
       </div>
